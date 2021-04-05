@@ -32,14 +32,22 @@ app.use(
 
 const router = express.Router()
 
-router.get('/simple/get', function(req, res) {
+router.get('/simple/get', function (req, res) {
   res.json({
     msg: `hello world`
   })
 })
 
-router.get('/base/get', function(req, res) {
+router.get('/base/get', function (req, res) {
   res.json(req.query)
+})
+
+router.post('/base/login', (req, res) => {
+
+  res.send({
+    msg: 'set演示'
+
+  })
 })
 
 app.use(router)
