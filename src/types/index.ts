@@ -88,7 +88,7 @@ export interface AxiosInstanceManager<T> {
   eject(id: number): void
 }
 
-//因为他的data 是泛型 所以这个应该也是泛型 ==> Respose data => type
+//因为他的data 是泛型 所以这个应该也是泛型 ==> Respose data => type  1111
 export interface requestFun<T = any> {
   (val: T): T | Promise<T>
 }
