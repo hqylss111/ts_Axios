@@ -1,7 +1,7 @@
-import { parseHeades } from './helpers/headers'
-import { isPlainObject } from './helpers/util'
-import { AxiosReportConfig, AxiosPromise, AxiosRespose } from './types'
-
+import { parseHeades } from '../helpers/headers'
+import { isPlainObject } from '../helpers/util'
+import { AxiosReportConfig, AxiosPromise, AxiosRespose } from '../types'
+import { createAxiosError } from '../helpers/error'
 export default function xmlHttpReport(config: AxiosReportConfig): AxiosPromise {
   return new Promise((resolve, reject) => {
     const { data = null, url, method = 'get', headers = {}, responseType, timeout } = config
@@ -18,7 +18,7 @@ export default function xmlHttpReport(config: AxiosReportConfig): AxiosPromise {
     }
 
     // method 请求类型  url:请求地址 async 是否是异步
-    XmlHttpReport.open(method.toUpperCase(), url, true)
+    XmlHttpReport.open(method.toUpperCase(), url!, true)
 
     XmlHttpReport.onreadystatechange = function handleLoad() {
       // 没有相应
@@ -48,12 +48,12 @@ export default function xmlHttpReport(config: AxiosReportConfig): AxiosPromise {
 
     //发生网络错误错误的时候
     XmlHttpReport.onerror = function(error) {
-      reject(new Error('Nework error'))
+      reject(createAxiosError('Nework error', config, null))
     }
 
     //超时回调函数
     XmlHttpReport.ontimeout = function handTimeout() {
-      reject(new Error('timeout is ' + timeout) + 'ms exceend')
+      reject(createAxiosError('Nework error', config, 'no Requerst', XmlHttpReport))
     }
 
     // 给请求设置headers
@@ -71,7 +71,15 @@ export default function xmlHttpReport(config: AxiosReportConfig): AxiosPromise {
       if (respose.status >= 200 && respose.status <= 300) {
         resolve(respose)
       } else {
-        reject('request file with status code' + respose.status)
+        reject(
+          createAxiosError(
+            `request file with status code ${respose.status}`,
+            config,
+            'no Requerst',
+            xmlHttpReport,
+            respose
+          )
+        )
       }
     }
   })

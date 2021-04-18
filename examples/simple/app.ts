@@ -11,7 +11,7 @@ import axios from '../../src/index'
 
 axios({
   method:'post',
-  url:"/1",
+  url:"/23232321",
   data:{
     a:1,
     b:2
@@ -23,12 +23,3 @@ axios({
 })
 
 
-// axios({
-//   method:'post',
-//   url:"/base/login",
-//   headers:{
-//     'a':1,
-//     'content-type':"12323232"
-//   },
-//   data:null
-// })
