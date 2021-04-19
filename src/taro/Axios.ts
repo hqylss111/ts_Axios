@@ -8,6 +8,7 @@ import {
 } from '../types'
 import displatchRequest from './displatchRequest'
 import AxiosInstanceManager from './AxiosInstanceManager'
+import mergeConfig from './mergeConfig'
 /**
  * chain
  * 他有可能添加了拦截器 接受了一个resolvedFun
@@ -32,7 +33,11 @@ interface Ichain<T> {
 export default class Axios {
   interceptors: interceptor
 
-  constructor() {
+  defaults: AxiosReportConfig
+
+  constructor(config: AxiosReportConfig) {
+    this.defaults = config
+
     this.interceptors = {
       request: new AxiosInstanceManager<AxiosReportConfig>(),
       response: new AxiosInstanceManager<AxiosRespose>()
@@ -49,6 +54,9 @@ export default class Axios {
     } else {
       config = url
     }
+
+    //请求前就要数据合并 defaults默认配置 config 用户配置
+    config = mergeConfig(this.defaults, config)
 
     // let chine:Array<Ichine> = [];
     // 拦截器promise 队列

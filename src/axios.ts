@@ -1,10 +1,11 @@
 import Axios from './taro/Axios'
 import { extend } from './helpers/util'
-import { AxiosInstance } from './types/index'
-
-function createInstance(): AxiosInstance {
+import { AxiosInstance, AxiosReportConfig } from './types/index'
+import defaults from './taro/defaults'
+function createInstance(config: AxiosReportConfig): AxiosInstance {
   //创建一个axios
-  const context = new Axios()
+  const context = new Axios(config)
+
   const instacne = Axios.prototype.request.bind(context)
 
   //context 对象所有的属性复制到 instacne 上
@@ -13,6 +14,6 @@ function createInstance(): AxiosInstance {
   return instacne as AxiosInstance
 }
 
-const axios = createInstance()
+const axios = createInstance(defaults)
 
 export default axios

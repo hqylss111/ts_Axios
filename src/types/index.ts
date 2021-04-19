@@ -19,12 +19,14 @@ export type Method =
 
 export interface AxiosReportConfig {
   url?: string
-  method: Method
+  method?: Method
   data?: any
   params?: any
   headers?: any
   timeout?: number
   responseType?: XMLHttpRequestResponseType //返回类型
+
+  [propName: string]: any
 }
 
 export interface AxiosRespose<T = any> {
@@ -54,6 +56,8 @@ export interface interceptor {
 }
 
 export interface Axios {
+  defaults: AxiosReportConfig
+
   interceptors: interceptor
 
   request<T = any>(config: AxiosReportConfig): AxiosPromise<T>

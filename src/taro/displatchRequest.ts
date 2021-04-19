@@ -2,7 +2,7 @@ import { AxiosPromise, AxiosReportConfig, AxiosRespose } from '../types'
 import { buildURL } from '../helpers/url'
 import xmlHttpReport from './xmlHttpReport'
 import { transformRequest, transformResponse } from '../helpers/data'
-import { processHeades } from '../helpers/headers'
+import { flattenHeaders, processHeades } from '../helpers/headers'
 export default function _displatchRequest(config: AxiosReportConfig): AxiosPromise {
   // 使用 xml 请求
   processConfig(config)
@@ -18,6 +18,8 @@ function processConfig(config: AxiosReportConfig): void {
   config.headers = transformHeaders(config)
 
   config.data = transformRequestData(config)
+
+  config.headers = flattenHeaders(config.headers, config.method!)
 }
 
 function transformUrl(config: AxiosReportConfig): string {
